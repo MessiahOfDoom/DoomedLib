@@ -1,5 +1,6 @@
 module DoomedLib
 using PyPlot
+export generate_fractals
 
 function newton(f ::Function, z0 ::Complex{Float64}, precision ::Real, epsilon ::Number, max_iterations ::Integer ) ::Tuple{Complex{Float64}, Int64}
 
@@ -68,7 +69,7 @@ function func_wrapper(params ::Array, constant ::Real)
     () -> (to_string;print;f;init)
 end
 
-function random_fractal(image_name;function_length=10)
+function random_fractal(image_name;function_length=10, x_length = 720 ::Int64, y_length = 720 ::Int64, x_min = -2, x_max = 2, y_min = -2, y_max = 2, max_steps = 200, zero_precision = 1e-6, diff_precision = 1e-10, plot_failures = true)
     functions = func_list()
     array = []
     for i in 1:function_length
@@ -79,7 +80,7 @@ function random_fractal(image_name;function_length=10)
     function f(z)
         return rf.f(z)
     end
-    mat = fractal(f)
+    mat = fractal(f, x_length = x_length, y_length = y_length, x_min = x_min, x_max = x_max, y_min = y_min, y_max = y_max, max_steps = max_steps, zero_precision = zero_precision, diff_precision = diff_precision, plot_failures = plot_failures)
     imsave(image_name, mat, origin="lower")
     return (image_name, rf.to_string())
 end
@@ -146,10 +147,10 @@ function func_list()
     () -> (rand_func)
 end
 
-function generate_fractals(amount = 5, file_prefix = "fractal"; save_functions=true, function_save_loc="functions.txt", print_to_cmd=false)
+function generate_fractals(amount = 5, file_prefix = "fractal"; save_functions=true, function_save_loc="functions.txt", print_to_cmd=false, function_length=10, x_length = 720 ::Int64, y_length = 720 ::Int64, x_min = -2, x_max = 2, y_min = -2, y_max = 2, max_steps = 200, zero_precision = 1e-6, diff_precision = 1e-10, plot_failures = true)
 
     for i in 1:amount
-        a, b = random_fractal(file_prefix * string(i) * ".png")
+        a, b = random_fractal(file_prefix * string(i) * ".png", function_length = function_length, x_length = x_length, y_length = y_length, x_min = x_min, x_max = x_max, y_min = y_min, y_max = y_max, max_steps = max_steps, zero_precision = zero_precision, diff_precision = diff_precision, plot_failures = plot_failures)
         if(save_functions)
             open(function_save_loc, "a") do io
                 write(io, a * " :   " * b)
