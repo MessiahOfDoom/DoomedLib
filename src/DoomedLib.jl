@@ -22,7 +22,7 @@ function diff(f, x, epsilon)
 end
 
 function fractal(f;x_length = 720 ::Int64, y_length = 720 ::Int64, x_min = -2, x_max = 2, y_min = -2, y_max = 2, max_steps = 200, zero_precision = 1e-6, diff_precision = 1e-10, plot_failures = true)
-    mat = zeros(Int64, x_length, y_length)
+    mat = zeros(Int64, y_length, x_length)
     x_range = range(x_min, length=x_length, stop=x_max)
     y_range = range(y_min, length=y_length, stop=y_max)
     i_index = 0
@@ -34,7 +34,7 @@ function fractal(f;x_length = 720 ::Int64, y_length = 720 ::Int64, x_min = -2, x
             z = r + i*im
             zero, steps = newton(f, z, zero_precision, diff_precision, max_steps)
             if(plot_failures || zero != NaN)
-                mat[r_index, i_index] = steps
+                mat[i_index, r_index] = steps
             end
         end
         r_index = 0
