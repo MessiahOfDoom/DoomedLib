@@ -1,0 +1,7 @@
+name = "DoomedLib"
+uuid = "9779a023-c7e5-47fa-b42b-568756d26f7d"
+authors = ["MessiahOfDoom <42930041+MessiahOfDoom@users.noreply.github.com>"]
+version = "0.1.0"
+
+[deps]
+PyPlot = "d330b81b-6aea-500a-939a-2ce795aea3ee"
