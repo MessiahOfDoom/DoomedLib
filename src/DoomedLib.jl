@@ -135,14 +135,21 @@ function func_list()
         function to_string() return "(" * func1.to_string() * ")^(" * func2.to_string() * ")" end
         () -> (init;exec;to_string)
     end
+    function f7()
+        function init() end
+        function exec(z) return log(z) end
+        function to_string() return "log(z)" end
+        () -> (init;exec;to_string)
+    end
     function rand_func()
-        i = rand(1:6)
+        i = rand(1:7)
         if(i == 1) return f1() end
         if(i == 2) return f2() end
         if(i == 3) return f3() end
         if(i == 4) return f4() end
         if(i == 5) return f5() end
         if(i == 6) return f6() end
+        if(i == 7) return f7() end
     end
     () -> (rand_func)
 end
