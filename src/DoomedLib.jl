@@ -1,7 +1,13 @@
 module DoomedLib
 using PyPlot
-export generate_fractals
 
+### Generally usefull functions
+
+export diff, newton
+
+"""
+Finds zeros based on newtons method
+"""
 function newton(f ::Function, z0 ::Complex{Float64}, precision ::Real, epsilon ::Number, max_iterations ::Integer ) ::Tuple{Complex{Float64}, Int64}
 
     z_i_minus = z0
@@ -17,10 +23,20 @@ function newton(f ::Function, z0 ::Complex{Float64}, precision ::Real, epsilon :
     return (NaN, max_iterations + 1)
 end
 
+"""
+Calculates the differential of f at x
+"""
 function diff(f, x, epsilon)
     return (f(x + epsilon) - f(x - epsilon)) / (2 * epsilon)
 end
 
+### Fractal Stuff
+
+export generate_fractals
+
+"""
+Generates a fractal based on newtons method
+"""
 function fractal(f;x_length = 720 ::Int64, y_length = 720 ::Int64, x_min = -2, x_max = 2, y_min = -2, y_max = 2, max_steps = 200, zero_precision = 1e-6, diff_precision = 1e-10, plot_failures = true)
     mat = zeros(Int64, y_length, x_length)
     x_range = range(x_min, length=x_length, stop=x_max)
@@ -42,6 +58,9 @@ function fractal(f;x_length = 720 ::Int64, y_length = 720 ::Int64, x_min = -2, x
     return mat
 end
 
+"""
+Wrapper for my randomly generated function to provide support for printing and initializing
+"""
 function func_wrapper(params ::Array, constant ::Real)
     function to_string()
         out = "";
@@ -69,6 +88,9 @@ function func_wrapper(params ::Array, constant ::Real)
     () -> (to_string;print;f;init)
 end
 
+"""
+Generates a single random fractal, use generate_fractals instead
+"""
 function random_fractal(image_name;function_length=10, x_length = 720 ::Int64, y_length = 720 ::Int64, x_min = -2, x_max = 2, y_min = -2, y_max = 2, max_steps = 200, zero_precision = 1e-6, diff_precision = 1e-10, plot_failures = true)
     functions = func_list()
     array = []
@@ -85,6 +107,9 @@ function random_fractal(image_name;function_length=10, x_length = 720 ::Int64, y
     return (image_name, rf.to_string())
 end
 
+"""
+Random functions to generate random fractals
+"""
 function func_list()
     function f1()
         function init() end
@@ -154,6 +179,9 @@ function func_list()
     () -> (rand_func)
 end
 
+"""
+Generates random fractals, used for my Discord Bot
+"""
 function generate_fractals(amount = 5, file_prefix = "fractal"; save_functions=true, function_save_loc="functions.txt", print_to_cmd=false, function_length=10, x_length = 720 ::Int64, y_length = 720 ::Int64, x_min = -2, x_max = 2, y_min = -2, y_max = 2, max_steps = 200, zero_precision = 1e-6, diff_precision = 1e-10, plot_failures = true)
 
     for i in 1:amount
@@ -168,5 +196,7 @@ function generate_fractals(amount = 5, file_prefix = "fractal"; save_functions=t
         end
     end
 end
+
+###
 
 end # module
